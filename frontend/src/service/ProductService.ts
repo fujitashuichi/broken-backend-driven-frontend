@@ -1,10 +1,9 @@
-import type { Product } from "../types/common/types.data";
 import type { ServiceResult } from "../types/dto/types.service";
 
 export class ProductService {
     API_URL = import.meta.env.VITE_API_URL;
 
-    fetchProducts = async (): Promise<ServiceResult<Product>> => {
+    fetchProducts = async (): Promise<ServiceResult> => {
         try {
             const response = await fetch(`${this.API_URL}/products`);
 

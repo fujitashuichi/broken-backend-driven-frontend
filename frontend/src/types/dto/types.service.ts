@@ -1,5 +1,9 @@
-export type ServiceResult<T> = {
+export type ServiceResult = {
     ok: boolean,
     error?: Error,
-    value?: T
+    value?: unknown
 }
+
+export type LoadResult =
+    | { status: "error", error: Error }
+    | { status: "success", value: unknown }
