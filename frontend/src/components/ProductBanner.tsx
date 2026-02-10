@@ -1,17 +1,24 @@
+/// Coder B
+
 import { useEffect, useState } from 'react'
 import ProductAdaptor from '../service/ProductAdaptor'
-import type { Product } from '../types/common/types.data'
+
+type ProductBannerRow = {
+    id: number
+    name: string
+    memo?: string
+}
 
 const adaptor = ProductAdaptor()
 
 function ProductBanner() {
-    const [first, setFirst] = useState<Product | undefined>(undefined)
+    const [first, setFirst] = useState<ProductBannerRow | undefined>(undefined)
     const [note, setNote] = useState('')
 
     useEffect(() => {
         adaptor.load().then((result) => {
             if (result.status === 'success') {
-                const list = result.value as Product[]
+                const list = result.value as unknown as ProductBannerRow[]
                 setFirst(list[0])
                 setNote('primary')
                 return
@@ -22,7 +29,7 @@ function ProductBanner() {
         setTimeout(() => {
             adaptor.load().then((result) => {
                 if (result.status === 'success') {
-                    const list = result.value as Product[]
+                    const list = result.value as unknown as ProductBannerRow[]
                     setFirst(list[list.length - 1])
                 }
             })

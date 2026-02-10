@@ -1,6 +1,8 @@
 import type { ControllerType } from '../types/common/types.union';
 import ProductAdaptor from '../service/ProductAdaptor';
 
+////// { "error", Error } | { "success", unknown } のみを返す
+////// 使用者は、isProduct(unknown) などでバリデーションする
 
 function ProductController() {
     const adaptor = ProductAdaptor();

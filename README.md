@@ -63,9 +63,44 @@
 * 現時点でローディング状態は扱わないことに決定（データパイプにローディング状態は不要）
 * ControllerではStatus不整合を弾き、Providerまでunknownデータを保持する
 * いずれの層でも、エラーは次の層に流す
+* isProductバリデーションに挑戦したが、TSの構造的に限界を迎えZodの導入を決意 <br />
+  [Zod導入前のコード](./docs/code.product_validator_old.md) <br />
+  [Zod導入後のコード](./docs/code.product_validator_new.md)
 
 ### 現在の問題点
 * Controller層を通った後のバリデーションがまだ多い
-* isProductバリデーションに挑戦したが、TSの構造的に限界を迎えZodの導入を決意
-  [Zod導入前のコード](./docs/code.product_validator_old.md)
-  [Zod導入後のコード](./docs/code.product_validator_new.md)
+* Providerを実装するまでの間、UIの仮設計を黙認することになる
+
+### 設計の縛り
+* 以下の7項目を満たすコードをCodexに生成させ、その上で改修する
+1. Loader / Adaptor は直接 UI から呼び出されている
+2. Loader / Adaptor の戻り値の形に UI が依存している
+3. UI 側に「一時しのぎのコード」が含まれている
+4. 非同期処理の競合は考慮されていない
+5. 型定義が分散・増殖している
+6. エラー処理が統一されていない
+7. 設計背景がコードから読み取れない
+
+### 新たに発生した問題点
+* ProductList
+  * 共通化されていない型でごまかされている
+  * Controllerの責務をUIに持ち込んでいる
+* ProductAside
+  * エラーを数えながら取得データをため込んでいるが、必要性がない
+* ProductBanner
+  * 不自然に同じコードを繰り返している
+* 共通
+  * isProductがあるにも関わらず、asで型を潰している
+  * ControllerとAdaptorの責務を意識せず、責務境界を溶けさせている
+  * UIごとにエラーを数えたりデータをストックしているため、整合性がとれない
+
+### 現状整理
+* Service/Adaptor/Controller で、
+  {"error", Error} | {"success", unknown} まで絞れている
+* Controllerを呼んで、isProduct(unknown) をすれば、整合性チェックは完了する
+* 元から、isProduct() はProviderで使う予定だった
+
+### 改修案
+* UIの設計を完全に停止して、Providerを作成
+* 非同期処理のタイマー制御はまだ混乱する段階なため、UIに残す
+* Boundaryは遅れて導入しても負担にならないため、今は動作改善を優先するために実装しない

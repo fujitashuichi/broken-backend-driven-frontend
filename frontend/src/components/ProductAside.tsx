@@ -1,4 +1,4 @@
-/// Coder A
+/// Coder B
 
 import { useEffect, useState } from 'react'
 import ProductAdaptor from '../service/ProductAdaptor.ts'
