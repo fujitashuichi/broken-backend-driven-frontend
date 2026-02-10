@@ -1,7 +1,9 @@
+/// Me
+
 import type { ServiceResult } from "../types/dto/types.service";
 
 export class ProductService {
-    API_URL = import.meta.env.VITE_API_URL;
+    private readonly API_URL = import.meta.env.VITE_API_URL;
 
     fetchProducts = async (): Promise<ServiceResult> => {
         try {
