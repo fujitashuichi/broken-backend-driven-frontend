@@ -1,47 +1,24 @@
-/// Coder B
-
 import { useEffect, useState } from 'react'
-import ProductAdaptor from '../service/ProductAdaptor'
+import { useSuccessProducts } from '../Boundary/useSuccessProducts'
+import type { Product } from '../types/common/types.data'
 
-type ProductBannerRow = {
-    id: number
-    name: string
-    memo?: string
-}
-
-const adaptor = ProductAdaptor()
 
 function ProductBanner() {
-    const [first, setFirst] = useState<ProductBannerRow | undefined>(undefined)
-    const [note, setNote] = useState('')
+    const products = useSuccessProducts();
+
+    const [first, setFirst] = useState<Product>(products[0]);
 
     useEffect(() => {
-        adaptor.load().then((result) => {
-            if (result.status === 'success') {
-                const list = result.value as unknown as ProductBannerRow[]
-                setFirst(list[0])
-                setNote('primary')
-                return
-            }
-            setNote('error-ish')
-        })
-
-        setTimeout(() => {
-            adaptor.load().then((result) => {
-                if (result.status === 'success') {
-                    const list = result.value as unknown as ProductBannerRow[]
-                    setFirst(list[list.length - 1])
-                }
-            })
+        const timer = setTimeout(() => {
+            setFirst(products[products.length - 1]);
         }, 700)
-    }, [])
 
-    if (!first) return null
+        return () => clearTimeout(timer);
+    }, [products])
 
     return (
         <section>
-            <strong>pickup:{note}</strong>
-            <div>{first.name}</div>
+            <div>{first.name || ""}</div>
         </section>
     )
 }

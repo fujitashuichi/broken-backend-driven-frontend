@@ -15,6 +15,7 @@ export const isProduct = (value: unknown): value is Product => {
 export const isProductArray = (value: unknown): value is Product[] => {
     return (
         Array.isArray(value) &&
+        value.length > 0 &&
         value.every(item => isProduct(item))
     )
 }
