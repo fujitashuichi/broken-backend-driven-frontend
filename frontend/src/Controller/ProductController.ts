@@ -1,4 +1,4 @@
-import type { ControllerType } from '../types/common/types.union';
+import type { ControllerType } from '../types/common/types.controller';
 import ProductAdaptor from '../service/ProductAdaptor';
 
 ////// { "error", Error } | { "success", unknown } のみを返す
