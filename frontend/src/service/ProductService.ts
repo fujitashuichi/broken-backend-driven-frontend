@@ -7,15 +7,29 @@ export class ProductService {
 
     fetchProducts = async (): Promise<ServiceResult> => {
         try {
-            const response = await fetch(`${this.API_URL}/products`);
+            const response = await fetch(`${this.API_URL}/products`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
 
             if (!response.ok) {
-                throw new Error(`fetch error: status${response.status}(${response.statusText})`)
+                const data = await response.json();
+                // ok出ないにも関わらず中身が正常系の場合
+                if (data) {
+                    return {
+                        ok: true,
+                        value: data
+                    }
+                }
+
+                throw new Error(`fetch error: status${response.status}`)
             }
 
             return {
                 ok: true,
-                value: response.json()
+                value: await response.json()
             }
         } catch (e) {
             if (e instanceof Error) {

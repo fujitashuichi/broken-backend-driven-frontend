@@ -14,6 +14,7 @@ const products = [
 app.use(express.json());
 
 app.get("/products", (req, res) => {
+    /*
     const r = Math.random()
 
     if (r < 0.15) {
@@ -37,8 +38,12 @@ app.get("/products", (req, res) => {
     if (r < 0.6) {
         return res.status(400).json(products)
     }
+    */
 
-    return res.status(200).json(products)
+    // 完全な正常系
+    return res.status(200).json([
+        { id: 1, name: "apple" }
+    ])
 })
 
 app.get("/products/:id", async (req, res) => {

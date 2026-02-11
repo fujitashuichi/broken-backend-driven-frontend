@@ -18,7 +18,7 @@ function ProductProvider({ children }: { children: React.ReactNode }) {
             setData(validatedData);
         }
         load();
-    }, [controller]);
+    }, []);
 
     return (<ProductContext.Provider value={data}>{children}</ProductContext.Provider>)
 }

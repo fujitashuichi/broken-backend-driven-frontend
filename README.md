@@ -114,4 +114,25 @@
 
 ### 現時点での問題点
 * HTML形式のレスポンスが返ってくるが、適切なエラーが表示されず、ソースコード上の原因が究明できていない
-* 少なくとも、Coder A,B のどちらかの変更後から発症している
+
+### 改修
+* response.statusText がコードに追加されていることから、これが text/html であると予想
+* 単に、response.text として検証 → 失敗
+* method と headerのContent-Type を明示 → Service内でのfetchエラーが表示されるようになったが、原因は分からない
+
+* net::ERR_INSUFFICIENT_RESOURCES から、エラー時に大量にfetchし直している問題も露呈 → Provider のuseEffect依存配列を空に
+* net::ERR_INSUFFICIENT_RESOURCES は解消された
+
+* fetchそのものに失敗しており、例外処理自体は成功していることが判明
+* 無限レンダリングは無くなり、fetch回数も正常なため、URLアクセス自体を疑う
+* URLに食い違いは見られなかった
+* Networkを確認しても失敗を意味するステータスは無かった
+
+* サーバーのURLに直接アクセスしたところ、ステータス404だった
+* FEからのアクセスでは404すら出なかったが、URLの書き間違いでは無かった
+
+* awaitの指定ミスであったため、修正した
+
+### 追加実装
+* !response.ok かつ正常系の場合の処理を追加
+* 完全な正常系が通るかを確認
