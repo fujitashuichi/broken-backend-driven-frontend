@@ -135,4 +135,17 @@
 
 ### 追加実装
 * !response.ok かつ正常系の場合の処理を追加
+
+### バグ修正
 * 完全な正常系が通るかを確認
+* コンソールで各層のデータを確認
+  * server層: fetchデータのURLが "http://localhost:5173/undefined/products" だった
+  * this.API_URL をコンソール表示したところ、undefined
+  * env.dev を env.development にして解決
+* fetchエラーが発生するようになった
+  * Cors-Origin 関連の普通のエラーにたどり着いた
+
+### 正常動作
+* Cors 通信を設定し、正常値が通るようになった
+* 次に、異常値も流して動作を確認する
+* 異常値を正しくバウンダリングできていることを確認

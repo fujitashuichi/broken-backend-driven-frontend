@@ -18,6 +18,7 @@ function ProductBanner() {
 
     return (
         <section>
+            <h2>Banner</h2>
             <div>{first.name || ""}</div>
         </section>
     )

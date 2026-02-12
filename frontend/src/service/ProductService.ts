@@ -16,7 +16,7 @@ export class ProductService {
 
             if (!response.ok) {
                 const data = await response.json();
-                // ok出ないにも関わらず中身が正常系の場合
+                // okでないにも関わらず中身が正常系の場合
                 if (data) {
                     return {
                         ok: true,

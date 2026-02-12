@@ -1,4 +1,5 @@
 const express = require('express')
+const cors = require("cors")
 const app = express()
 const port = 3000
 
@@ -12,9 +13,13 @@ const products = [
 ];
 
 app.use(express.json());
+app.use(cors({
+    origin: "http://localhost:5173",
+    methods: ["GET", "POST"],
+    optionsSuccessStatus: 200
+}));
 
 app.get("/products", (req, res) => {
-    /*
     const r = Math.random()
 
     if (r < 0.15) {
@@ -38,11 +43,12 @@ app.get("/products", (req, res) => {
     if (r < 0.6) {
         return res.status(400).json(products)
     }
-    */
 
     // 完全な正常系
     return res.status(200).json([
-        { id: 1, name: "apple" }
+        { id: 1, name: "apple" },
+        { id: 2, name: "banana"  },
+        { id: 3, name: "orange" }
     ])
 })
 

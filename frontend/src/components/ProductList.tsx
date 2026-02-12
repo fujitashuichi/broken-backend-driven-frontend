@@ -7,6 +7,7 @@ function ProductList() {
 
     return (
         <div>
+            <h2>List</h2>
             <ul>
                 {products.map((item) => (
                     <li key={`${item.id}-${item.name}`}>{item.name}</li>
